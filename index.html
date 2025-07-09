@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baked by Kake - Artisan Baking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-purple: #E6D7FF;
+            --secondary-purple: #D4C5F9;
+            --accent-purple: #B8A5E8;
+            --deep-purple: #9B7EDE;
+            --text-dark: #2D2D2D;
+            --text-light: #6B6B6B;
+            --white: #FFFFFF;
+            --light-gray: #F8F9FA;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--white) 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(155, 126, 222, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--deep-purple);
+            text-shadow: 2px 2px 4px rgba(155, 126, 222, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--deep-purple);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-purple);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            overflow: hidden;
+        }
+
+        .page {
+            display: none;
+            padding: 3rem 0;
+            min-height: calc(100vh - 80px);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            color: var(--deep-purple);
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(155, 126, 222, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Home Page */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--secondary-purple) 100%);
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(155, 126, 222, 0.3);
+        }
+
+        .hero-logo {
+            height: 120px;
+            width: auto;
+            margin-bottom: 1rem;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-out 0.5s forwards;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.4));
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--white);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-out 1.5s forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--white);
+            color: var(--deep-purple);
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-out 2.5s forwards;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Grid Layouts */
+        .grid {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(155, 126, 222, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid var(--primary-purple);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(155, 126, 222, 0.2);
+        }
+
+        .card h3 {
+            color: var(--deep-purple);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-item {
+            background: var(--secondary-purple);
+            aspect-ratio: 1;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            background: var(--accent-purple);
+        }
+
+        /* Events */
+        .event-item {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(155, 126, 222, 0.1);
+            border-left: 4px solid var(--accent-purple);
+        }
+
+        .event-date {
+            color: var(--deep-purple);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .event-location {
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(155, 126, 222, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--primary-purple);
+            border-radius: 8px;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--deep-purple);
+        }
+
+        button {
+            background: var(--deep-purple);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: var(--accent-purple);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--deep-purple);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <img src="Baked by Kake Logo.png" alt="Baked by Kake Logo" style="height: 60px; width: auto;">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" onclick="showPage('home')">Home</a></li>
+                <li><a href="#ordering" onclick="showPage('ordering')">Ordering</a></li>
+                <li><a href="#gallery" onclick="showPage('gallery')">Gallery</a></li>
+                <li><a href="#events" onclick="showPage('events')">Events</a></li>
+                <li><a href="#contact" onclick="showPage('contact')">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <div class="container">
+                <div class="hero">
+                    <img src="Baked by Kake Logo.png" alt="Baked by Kake Logo" class="hero-logo">
+                    <h1>Baked by Kake</h1>
+                    <p>Artisan baking with love, one sweet creation at a time</p>
+                    <a href="#ordering" onclick="showPage('ordering')" class="cta-button">Order Now</a>
+                </div>
+
+                <div class="grid grid-3">
+                    <div class="card">
+                        <h3>🧁 Fresh Daily</h3>
+                        <p>Every item is baked fresh daily using premium ingredients and traditional techniques passed down through generations.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🎂 Custom Orders</h3>
+                        <p>Specializing in custom cakes, cupcakes, and treats for birthdays, weddings, and special occasions.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🏪 Local Markets</h3>
+                        <p>Find us at local farmers markets and community events throughout the week. Check our events page for locations!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ordering Page -->
+        <div id="ordering" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h2 class="page-title">Place Your Order</h2>
+                    <p class="page-subtitle">Ready to satisfy your sweet tooth? Choose from our delicious selection!</p>
+                </div>
+
+                <div class="grid grid-2">
+                    <div class="card">
+                        <h3>🧁 Cupcakes</h3>
+                        <p><strong>Flavors:</strong> Vanilla, Chocolate, Red Velvet, Lemon, Strawberry</p>
+                        <p><strong>Price:</strong> $3.50 each | $36 per dozen</p>
+                        <p>Minimum order: 6 cupcakes</p>
+                    </div>
+                    <div class="card">
+                        <h3>🎂 Custom Cakes</h3>
+                        <p><strong>Starting at:</strong> $45 for 8" round</p>
+                        <p>Custom designs, flavors, and decorations available. Perfect for birthdays, weddings, and celebrations.</p>
+                        <p><strong>Order ahead:</strong> 72 hours minimum</p>
+                    </div>
+                    <div class="card">
+                        <h3>🍪 Cookies</h3>
+                        <p><strong>Varieties:</strong> Chocolate Chip, Sugar, Oatmeal Raisin, Snickerdoodle</p>
+                        <p><strong>Price:</strong> $2.50 each | $24 per dozen</p>
+                        <p>Minimum order: 6 cookies</p>
+                    </div>
+                    <div class="card">
+                        <h3>🥧 Seasonal Pies</h3>
+                        <p><strong>Current flavors:</strong> Apple, Pecan, Pumpkin, Berry</p>
+                        <p><strong>Price:</strong> $25 for 9" pie</p>
+                        <p><strong>Order ahead:</strong> 24 hours minimum</p>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h3>Order Form</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="customer-name">Name</label>
+                            <input type="text" id="customer-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customer-email">Email</label>
+                            <input type="email" id="customer-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customer-phone">Phone</label>
+                            <input type="tel" id="customer-phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="order-type">Order Type</label>
+                            <select id="order-type" required>
+                                <option value="">Select an option</option>
+                                <option value="cupcakes">Cupcakes</option>
+                                <option value="custom-cake">Custom Cake</option>
+                                <option value="cookies">Cookies</option>
+                                <option value="pie">Pie</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="pickup-date">Pickup Date</label>
+                            <input type="date" id="pickup-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="order-details">Order Details</label>
+                            <textarea id="order-details" rows="4" placeholder="Please describe your order, including quantities, flavors, and any special requests..."></textarea>
+                        </div>
+                        <button type="submit">Submit Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Page -->
+        <div id="gallery" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h2 class="page-title">Our Creations</h2>
+                    <p class="page-subtitle">Take a look at some of our beautiful baked goods</p>
+                </div>
+
+                <div class="gallery">
+                    <div class="gallery-item">🧁 Birthday Cupcakes</div>
+                    <div class="gallery-item">🎂 Wedding Cake</div>
+                    <div class="gallery-item">🍪 Sugar Cookies</div>
+                    <div class="gallery-item">🥧 Apple Pie</div>
+                    <div class="gallery-item">🧁 Red Velvet Cupcakes</div>
+                    <div class="gallery-item">🎂 Anniversary Cake</div>
+                    <div class="gallery-item">🍪 Chocolate Chip Cookies</div>
+                    <div class="gallery-item">🥧 Pecan Pie</div>
+                    <div class="gallery-item">🧁 Lemon Cupcakes</div>
+                </div>
+
+                <div class="card">
+                    <h3>📸 Photo Gallery Coming Soon!</h3>
+                    <p>We're working on adding beautiful photos of our baked goods. In the meantime, follow us on social media to see our latest creations, or visit us at one of our market locations to see (and taste!) our work in person.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Events Page -->
+        <div id="events" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h2 class="page-title">Find Us</h2>
+                    <p class="page-subtitle">Come visit us at local markets and events!</p>
+                </div>
+
+                <div class="event-item">
+                    <div class="event-date">Every Saturday • 8:00 AM - 2:00 PM</div>
+                    <h3>Newnan Farmers Market</h3>
+                    <p class="event-location">Downtown Newnan, GA</p>
+                    <p>Join us every Saturday at the Newnan Farmers Market! We'll have fresh cupcakes, cookies, and seasonal treats available.</p>
+                </div>
+
+                <div class="event-item">
+                    <div class="event-date">Every Sunday • 10:00 AM - 4:00 PM</div>
+                    <h3>Peachtree City Market</h3>
+                    <p class="event-location">Peachtree City, GA</p>
+                    <p>Visit us at the Sunday market for fresh baked goods and custom order consultations.</p>
+                </div>
+
+                <div class="event-item">
+                    <div class="event-date">July 15, 2025 • 9:00 AM - 3:00 PM</div>
+                    <h3>Summer Festival</h3>
+                    <p class="event-location">Senoia Town Square</p>
+                    <p>Special event featuring summer-themed treats and limited edition flavors!</p>
+                </div>
+
+                <div class="event-item">
+                    <div class="event-date">August 2, 2025 • 6:00 PM - 10:00 PM</div>
+                    <h3>Food Truck Friday</h3>
+                    <p class="event-location">Coweta County Fairgrounds</p>
+                    <p>Mobile bakery setup with grab-and-go treats and mini desserts.</p>
+                </div>
+
+                <div class="card">
+                    <h3>📅 Book Us for Your Event!</h3>
+                    <p>Looking to add something sweet to your event? We offer catering services for parties, corporate events, and special occasions. Contact us to discuss your needs and get a custom quote.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contact" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h2 class="page-title">Get In Touch</h2>
+                    <p class="page-subtitle">Let's make something sweet together!</p>
+                </div>
+
+                <div class="grid grid-2">
+                    <div class="card">
+                        <h3>About Me</h3>
+                        <p>Hi! I'm Kayja, the baker behind Baked by Kake.</p>
+						&nbsp;
+						<p>What started as a passion for creating beautiful, delicious treats has grown into a local baking business that I'm proud to share with our community.</p>
+                        &nbsp;
+						<p>I specialize in custom cakes, cupcakes, and cookies that not only taste amazing but look stunning too. Every item is made with care, using premium ingredients and traditional techniques.</p>
+						&nbsp;
+                        <p>When I'm not in the kitchen, you can find me at local farmers markets, connecting with customers and sharing my passion for baking. I believe that great food brings people together, and I'm honored to be part of your special moments.</p>
+                    </div>
+
+                    <div class="contact-form">
+                        <h3>Contact Form</h3>
+                        <form>
+						&nbsp;
+                            <div class="form-group">
+                                <label for="contact-name">Name</label>
+                                <input type="text" id="contact-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-email">Email</label>
+                                <input type="email" id="contact-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-subject">Subject</label>
+                                <select id="contact-subject" required>
+                                    <option value="">Select a topic</option>
+                                    <option value="order">Order Inquiry</option>
+                                    <option value="catering">Catering Request</option>
+                                    <option value="general">General Question</option>
+                                    <option value="feedback">Feedback</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-message">Message</label>
+                                <textarea id="contact-message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📞 Contact Information</h3>
+                    <p><strong>Phone:</strong> (702) 901-9382</p>
+                    <p><strong>Email:</strong> bakedbykake@icloud.com</p>
+                    <p><strong>Hours:</strong> Tuesday - Saturday, 8:00 AM - 6:00 PM</p>
+                    <p><strong>Location:</strong> Newnan, Georgia</p>
+                    <p><em>Custom orders require at least a 72 hours advance notice</em></p>
+					&nbsp;
+					&nbsp;
+	               <h3>❤ Social Media</h3>
+                    <p><strong>Instagram:</strong> @baked.by.kake</p>
+                    <p><strong>Facebook:</strong> @baked.by.kake</p>
+
+					
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Baked by Kake. All rights reserved. | Made with ❤️ in Newnan, GA</p>
+        </div>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages with fade out
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.style.opacity = '0';
+                setTimeout(() => {
+                    page.classList.remove('active');
+                }, 150);
+            });
+            
+            // Show selected page with fade in
+            setTimeout(() => {
+                document.getElementById(pageId).classList.add('active');
+                setTimeout(() => {
+                    document.getElementById(pageId).style.opacity = '1';
+                }, 50);
+            }, 150);
+            
+            // Update active nav link
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            // Smooth scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Form submission handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thank you for your message! We\'ll get back to you soon.');
+                    form.reset();
+                });
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 30px rgba(155, 126, 222, 0.15)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 2px 20px rgba(155, 126, 222, 0.1)';
+            }
+        });
+    </script>
+</body>
+</html>
